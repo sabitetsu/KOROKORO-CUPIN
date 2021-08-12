@@ -26,18 +26,28 @@ public class Shot : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            nowPos = Input.mousePosition;
-            nowPos.y = 1;
-            Destroy(LineObj);
-            TargetLine(startPos, nowPos);
-            Debug.Log("NOW");
+            
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 50.0f))
+            {
+                if (hit.collider.gameObject.tag != "Out")
+                {
+                    nowPos = hit.point;
+                    nowPos.y = 1;
+                    Destroy(LineObj);
+                    TargetLine(startPos, nowPos);
+                    Debug.Log("NOW");
+                }
+            }
         }
         else if (Input.GetMouseButtonUp(0))
         {
             endPos = Input.mousePosition;
             //endPos.y = 1;
             Destroy(LineObj);
-            TargetLine(startPos, endPos);
+            TargetLine(startPos, nowPos);
             Debug.Log("END");
         }
     }
